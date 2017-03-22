@@ -1,0 +1,7 @@
+push 7
+kemo
+push 10
+:error:
+:error:
+push 5
+quit
