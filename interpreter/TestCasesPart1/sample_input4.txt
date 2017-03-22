@@ -1,0 +1,9 @@
+push 6
+
+push 2
+
+div
+
+mul
+
+quit
