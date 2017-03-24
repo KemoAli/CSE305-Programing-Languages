@@ -72,6 +72,8 @@ public class interpreter {
 			HashMap<String, String> outSideLet =  new HashMap<>();
 
 			ArrayList <String> namesOnly =  new ArrayList<>();
+			ArrayList <String> stringOnly =  new ArrayList<>();
+
 			Stack<String> letEnd = new Stack<>();
 
 
@@ -235,7 +237,7 @@ public class interpreter {
 									names.put(second, val);
 									local.push(":unit:");
 								}else if(names.get(first)==null && !isNumber(first)){
-									if (namesOnly.contains(first)) {
+									if (namesOnly.contains(first) && !stringOnly.contains(first)) {
 										local.push(second);
 										local.push(first);
 										local.push(":error:");
@@ -255,27 +257,9 @@ public class interpreter {
 								local.push(":error:");
 							}
 
-							/*if(first.equals(":error:")){
-								local.push(second);
-								local.push(first);
-								local.push(":error:");
-								continue;
-							}else {
-								if (names.containsKey(first)) {
-									val = names.get(first);
-									names.put(second, val);
-								} else {
-									names.put(second, first);
-								}
-								local.push(":unit:");
-							}*/
+					
 						}
-						/*if (first.equals(":true:") || first.equals(":false:") || isNumber(first)
-								|| isValidName(first)) {
-							names.put(second,first);
-							local.push(":unit:");
-						}*/
-
+				
 					}
 	                else if (words[0].equals("swap")){
 	                    String toArr;
@@ -284,13 +268,11 @@ public class interpreter {
 	                    if(local.size()>1) {
 	                        first = local.pop();
 	                        second = local.pop();
-	                       // System.out.println("before swap: " + first + " -- : " +second +"\n");
 	                        toArr = swap(first, second);
 	                        String ret[] = toArr.split("\\s");
 	                        local.push(ret[1]);
 	                        local.push(ret[0]);
 	                    }else {
-	                       // System.out.println("swaping one element stack");
 	                       local.push(":error:");
 	                    }
 	                }
@@ -323,11 +305,8 @@ public class interpreter {
 						}
 						if (local.size() <3){
 							if(local.size() ==1){
-								//first =  local.pop();
 								local.push("::error");
 							}else if (local.size() ==2){
-								//first = local.pop();
-								//second = local.pop();
 								local.push(":error:");
 							}
 							continue;
@@ -348,7 +327,6 @@ public class interpreter {
 
 
 							if (third.equals(":false:") || third.equals(":true:")) {
-							//	System.out.println("third is boolean!!!");
 								if (third.equals(":true:")){
 									local.push(first);
 
@@ -374,7 +352,6 @@ public class interpreter {
 
 						}
 						else if( words.length>2){
-						//	System.out.println("----------len");
 							 String newWord="";
 							 for (int i=1; i <words.length;i++){
 								 newWord = newWord+" "+words[i];
@@ -382,12 +359,14 @@ public class interpreter {
 							 }
 							if(newWord.charAt(1)==34 && newWord.charAt(newWord.length()-1)==34){
 								String tem = newWord.substring(2,newWord.length()-1);
+								stringOnly.add(tem);
 								local.push(tem);
 
 							}
 						}
 						else if(words[1].charAt(0)==34 && words[1].charAt(words[1].length()-1)==34){
 							String tem = words[1].substring(1,words[1].length()-1);
+							stringOnly.add(tem);
 							local.push(tem);
 						}
 						else if (words[1].equals("-0")) {
