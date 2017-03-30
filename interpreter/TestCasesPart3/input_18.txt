@@ -1,5 +1,7 @@
-fun identify
+fun identity x
+let
 push x
+end
 return
 funEnd
 push 1

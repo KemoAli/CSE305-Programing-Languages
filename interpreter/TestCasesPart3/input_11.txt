@@ -1,4 +1,4 @@
-fun identify
+fun identity x
 push x
 return
 funEnd

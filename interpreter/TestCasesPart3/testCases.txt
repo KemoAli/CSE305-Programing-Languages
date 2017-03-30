@@ -1,0 +1,158 @@
+//////////////example 1///////////
+
+fun stop arg
+push 1
+return
+funEnd
+fun factorial arg
+push arg
+push 1
+sub
+push 1
+push arg
+equal
+push factorial
+push stop
+if
+call
+push arg
+mul
+return
+funEnd
+push 3
+push factorial
+call
+quit
+
+///////////example 2///////////////
+fun identity x
+push x
+return
+funEnd
+push 1.2
+push identity
+call
+quit
+
+////////////example 3 ////////////////////
+fun identity x
+push x
+return
+funEnd
+push x
+push 1
+bind
+push x
+push identity
+call
+quit
+
+
+////////////example 4 /////////////////////
+push x
+push 3
+bind
+fun addX arg
+push x
+push arg
+add
+return
+funEnd
+push x
+push 5
+bind 
+push a
+push 3
+bind
+push a 
+push addX
+call
+quit
+
+/////////// example 5 //////////////
+fun add1 x
+push x
+push 1
+add
+return
+funEnd
+push z
+push 2
+bind
+fun twiceZ y
+push z
+push y
+call
+push z
+push y
+call
+push z
+push y
+call
+add
+return
+funEnd
+push add1
+push twiceZ
+call
+quit
+
+/////////let end example 1//////////////
+let
+fun identity x
+push x
+return
+funEnd
+end
+push 1
+push identity
+call
+quit
+
+////////////example 2 /////////////
+fun identity x
+let
+push x
+end
+return
+funEnd
+push 1
+push identity
+call
+quit
+////////////example 3////////////
+
+fun identity x
+let
+push x
+push x
+add
+end
+return
+funEnd
+push 2
+push identity
+call
+
+
+/////////example 4///////
+push y
+push 5
+bind
+let
+push y
+push 7
+bind
+fun addY x
+let
+push x
+push y
+add
+end
+return
+funEnd
+push 2
+push addY
+call
+end
+quit
