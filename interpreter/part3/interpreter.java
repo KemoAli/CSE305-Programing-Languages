@@ -185,6 +185,12 @@ public class interpreter {
 						closure.push(":error:");
 					}
 				}
+				else if(coms[0].equals(":false:") || coms[0].equals(":true:")){
+					closure.push(coms[0]);
+				}
+				else if(coms[0].equals("pop")){
+					closure.pop();
+				}
 				else if (coms[0].equals("rem")){
 					int total;
 					String first = closure.pop();
@@ -936,6 +942,13 @@ public class interpreter {
 			return false;
 
 		}
+	static void pushTrueOrFalse(Stack<String> local, String input){
+		local.push(input);
+	}
+	static void pushError(Stack<String> local, String input){
+		local.push(input);
+
+	}
 	static void createBinding(Stack<String> local,Stack<String> letEnd,
 							  HashMap<String,String> outSideLet,
 							  HashMap<String,String> names,
@@ -1116,12 +1129,10 @@ public class interpreter {
 	}
 
 	public  static void main(String args[]) {
-		interpreter in = new interpreter();
-		String input = "C:/Users/kemok/Desktop/Spring2017/CSE 305/home_work/CSE305-Programing-Languages/cse305/input_2.txt";
-		String out = "C:/Users/kemok/Desktop/Spring2017/CSE 305/home_work/CSE305-Programing-Languages/cse305/output.txt";
-
-		in.interpreter(input, out);
-
+		interpreter in  =  new interpreter();
+	String input ="/home/kemo/Desktop/CSE305/CSE305-Programing-Languages/interpreter/TestCasesPart3/input_1.txt";
+	String output="/home/kemo/Desktop/CSE305/CSE305-Programing-Languages/interpreter/TestCasesPart3/output_1.txt";
+	in.interpreter(input,output);
 	}
 
 

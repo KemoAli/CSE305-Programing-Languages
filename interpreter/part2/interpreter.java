@@ -592,6 +592,14 @@ public class interpreter {
 	    }
 	    pr.close();
 	}
+public static void main(String args[]){
+
+  	interpreter in  =  new interpreter();
+	String input ="/home/kemo/Desktop/CSE305/CSE305-Programing-Languages/interpreter/input.txt";
+	String output="/home/kemo/Desktop/CSE305/CSE305-Programing-Languages/interpreter/output.txt";
+	in.interpreter(input,output);
+
+}
 
 
 }
