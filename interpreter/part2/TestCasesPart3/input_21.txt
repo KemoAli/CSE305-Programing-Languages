@@ -17,6 +17,3 @@ push a
 push 1
 add
 quit
-
-
-

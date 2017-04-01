@@ -1129,17 +1129,5 @@ public class interpreter {
 	    pr.close();
 	}
 
-	public  static void main(String args[]) {
-        Date d =  new Date();
-     //   System.out.println(d.getTime().);
-		interpreter in = new interpreter();
-		String input = "C:/Users/kemok/Desktop/Spring2017/CSE 305/home_work/CSE305-Programing-Languages/cse305/input_2.txt";
-		String out = "C:/Users/kemok/Desktop/Spring2017/CSE 305/home_work/CSE305-Programing-Languages/cse305/output.txt";
-
-		in.interpreter(input, out);
-
-	}
-
-
 }
 
