@@ -942,6 +942,9 @@ public class interpreter {
 			return false;
 
 		}
+static String inOutFun(){
+	
+}
 	static void pushTrueOrFalse(Stack<String> local, String input){
 		local.push(input);
 	}
@@ -1130,7 +1133,7 @@ public class interpreter {
 
 	public  static void main(String args[]) {
 		interpreter in  =  new interpreter();
-	String input ="/home/kemo/Desktop/CSE305/CSE305-Programing-Languages/interpreter/TestCasesPart3/input_1.txt";
+	String input ="/home/kemo/Desktop/CSE305/CSE305-Programing-Languages/interpreter/TestCasesPart3/input_11.txt";
 	String output="/home/kemo/Desktop/CSE305/CSE305-Programing-Languages/interpreter/TestCasesPart3/output_1.txt";
 	in.interpreter(input,output);
 	}

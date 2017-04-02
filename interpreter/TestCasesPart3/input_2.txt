@@ -1,11 +1,8 @@
 fun fun1 x
-push "Function 1"
+push 0
 return
 funEnd
-fun dummy y
-push "Dummy"
-funEnd
-pop
+push 1
 push fun1
 call
 quit

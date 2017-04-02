@@ -69,18 +69,24 @@ public class interpreter {
             HashMap<String, String> closureBinding =  new HashMap<>();
 
             ArrayList <String> namesOnly =  new ArrayList<>();
+            
+            
 
 
 			String inst;
 			String coms[];
 
             String funtionName = funName;
+            boolean hasReturn =false;
 
             int startIndex =  fun.indexOf(funtionName);
+            //String funtype = fun.remove(startIndex-1);
 
 			String actualArg = fun.get(startIndex+1);
+			//System.out.println("type "+funtype);
 			String lastBinding ="";
 			for (int i =startIndex; i< fun.size(); i++){
+				
 				if(fun.get(i).equals("funEnd")){
 					break;
 				}
@@ -145,23 +151,30 @@ public class interpreter {
 
                     if (first.equals(actualArg)){
                         first =arg;
+                        if (names.containsKey(first)) {
+                        	first = names.get(first);
+                        }
                     }if (second.equals(actualArg)){
                         second =arg;
+                        if (names.containsKey(second)) {
+                        	second = names.get(second);
+                        }
                     }
 
-                    if(name.containsKey(first) && letEnd.size()<1){
+                    if(name.containsKey(first)){
                         first= name.get(first);
                     }
-                    if (name.containsKey(second) && letEnd.size()<1){
+                    if (name.containsKey(second)){
                         second = name.get(second);
+                    }
+                    if (closureBinding.containsKey(first)){
+                        first = closureBinding.get(first);
                     }
 
-                    if(name.containsKey(first) && !letEnd.isEmpty()){
-                        first= name.get(first);
+                    if (closureBinding.containsKey(second)){
+                        second = closureBinding.get(second);
                     }
-                    if (name.containsKey(second) && !letEnd.isEmpty()){
-                        second = name.get(second);
-                    }
+                    System.out.println(first+"    "+second);
 
 					if (isNumber(first) && isNumber(second)) {
 						total = add(Integer.parseInt(first), Integer.parseInt(second));
@@ -177,6 +190,32 @@ public class interpreter {
 					int total;
 					String first = closure.pop();
 					String second  =  closure.pop();
+
+					 if (first.equals(actualArg)){
+                        first =arg;
+                        if (names.containsKey(first)) {
+                        	first = names.get(first);
+                        }
+                    }if (second.equals(actualArg)){
+                        second =arg;
+                        if (names.containsKey(second)) {
+                        	second = names.get(second);
+                        }
+                    }
+                    if(name.containsKey(first)){
+                        first= name.get(first);
+                    }
+                    if (name.containsKey(second)){
+                        second = name.get(second);
+                    }
+                    if (closureBinding.containsKey(first)){
+                        first = closureBinding.get(first);
+                    }
+
+                    if (closureBinding.containsKey(second)){
+                        second = closureBinding.get(second);
+                    }
+
 					if (isNumber(first) && isNumber(second)) {
 						total = rem(Integer.parseInt(first), Integer.parseInt(second));
 						closure.push(String.valueOf(total));
@@ -194,19 +233,30 @@ public class interpreter {
 					String first = closure.pop();
                     String second = closure.pop();
 
+                   
+                    if (first.equals(actualArg)){
+                        first =arg;
+                        if (names.containsKey(first)) {
+                        	first = names.get(first);
+                        }
+                    }if (second.equals(actualArg)){
+                        second =arg;
+                        if (names.containsKey(second)) {
+                        	second = names.get(second);
+                        }
+                    }
+                    if(name.containsKey(first)){
+                        first= name.get(first);
+                    }
+                    if (name.containsKey(second)){
+                        second = name.get(second);
+                    }
                     if (closureBinding.containsKey(first)){
                         first = closureBinding.get(first);
                     }
 
                     if (closureBinding.containsKey(second)){
                         second = closureBinding.get(second);
-                    }
-                    if (first.equals(actualArg)){
-                        first =arg;
-                    }
-
-                    if (second.equals(actualArg)){
-                        second=arg;
                     }
                     if (isNumber(first) && isNumber(second)) {
 						total = mul(Integer.parseInt(first), Integer.parseInt(second));
@@ -218,12 +268,46 @@ public class interpreter {
 					}
 				}
 				else if (coms[0].equals("div")){
+					if (closure.size()<2) {
+						closure.push(":error:");
+						continue;
+					}
 					int total;
 					String first = closure.pop();
 					String second  =  closure.pop();
+					 if (first.equals(actualArg)){
+                        first =arg;
+                        if (names.containsKey(first)) {
+                        	first = names.get(first);
+                        }
+                    }if (second.equals(actualArg)){
+                        second =arg;
+                        if (names.containsKey(second)) {
+                        	second = names.get(second);
+                        }
+                    }
+                    if(name.containsKey(first)){
+                        first= name.get(first);
+                    }
+                    if (name.containsKey(second)){
+                        second = name.get(second);
+                    }
+                    if (closureBinding.containsKey(first)) {
+                    	first =  closureBinding.get(first);
+                    }
+                    if (closureBinding.containsKey(second)) {
+                    	second =  closureBinding.get(second);
+                    }
+
 					if (isNumber(first) && isNumber(second)) {
-						total = div(Integer.parseInt(first), Integer.parseInt(second));
-						closure.push(String.valueOf(total));
+						if (Integer.parseInt(first)==0) {
+							closure.push(second);
+							closure.push(first);
+							closure.push(":error:");	
+						}else{
+							total = div(Integer.parseInt(first), Integer.parseInt(second));
+							closure.push(String.valueOf(total));
+						}
 					}
 					else{
 						closure.push(second);
@@ -232,14 +316,35 @@ public class interpreter {
 					}
 				}
 				else if (coms[0].equals("equal")){
+					if (closure.size()<2) {
+						closure.push(":error:");
+						continue;
+					}
 					String first = closure.pop();
 					String second  =  closure.pop();
+                   
                     if (first.equals(actualArg)){
                         first =arg;
+                        if (names.containsKey(first)) {
+                        	first = names.get(first);
+                        }
+                    }if (second.equals(actualArg)){
+                        second =arg;
+                        if (names.containsKey(second)) {
+                        	second = names.get(second);
+                        }
                     }
-
-                    if (second.equals(actualArg)){
-                        second=arg;
+                    if(name.containsKey(first)){
+                        first= name.get(first);
+                    }
+                    if (name.containsKey(second)){
+                        second = name.get(second);
+                    }
+                    if (closureBinding.containsKey(first)) {
+                    	first =  closureBinding.get(first);
+                    }
+                    if (closureBinding.containsKey(second)) {
+                    	second =  closureBinding.get(second);
                     }
 					if (isNumber(first) && isNumber(second)) {
 						if (Integer.parseInt(first) ==Integer.parseInt(second)) {
@@ -260,10 +365,6 @@ public class interpreter {
 					String second;
 					String third;
 
-					if (closure.isEmpty()){
-						closure.push(":error:");
-						continue;
-					}
 					if (closure.size() <3){
 						closure.push(":error:");
 						continue;
@@ -273,14 +374,34 @@ public class interpreter {
 						second = closure.pop();
 						third = closure.pop();
                         if (first.equals(actualArg)){
-                            first=arg;
-                        }
-                        else if (second.equals(actualArg)){
-                            second=arg;
-                        }
-                        else if (third.equals(actualArg)){
-                            third=arg;
-                        }
+                        	first =arg;
+	                        if (names.containsKey(first)) {
+	                        	first = names.get(first);
+	                        }
+                    	}if (second.equals(actualArg)){
+	                        second =arg;
+	                        if (names.containsKey(second)) {
+	                        	second = names.get(second);
+	                        }
+	                    }
+	                    if (third.equals(actualArg)){
+	                        third =arg;
+	                        if (names.containsKey(third)) {
+	                        	third = names.get(third);
+	                        }
+                    	}
+
+
+                        if(name.containsKey(first)){
+                        	first= name.get(first);
+                    	}
+                    	if (name.containsKey(second)){
+                        	second = name.get(second);
+                    	}  
+                    	if(name.containsKey(third)){
+                        	third= name.get(third);
+                    	}
+                   
 
 
 						if (third.equals(":false:") || third.equals(":true:")) {
@@ -307,61 +428,194 @@ public class interpreter {
                         continue;
                     }
                     else {
-                        funName =closure.pop();
+                          funName =closure.pop();
 					      argument= closure.pop();
                         if (funName.equals(actualArg)){
                             funName = arg;
 
+                        } 
+ 						if (fun.contains(funName)){
+
+	                       	 if (arg.equals(":error:")) {
+								closure.push(argument);
+								closure.push(funName);
+								closure.push(":error:");
+								continue;
+							}
+
+
+                    	if (stringOnly.contains(argument)) {
+                    		//argument =  closureBinding.get(argument);
+                    		}
+                        else if (isValidName(argument)) {
+                        	boolean isNum = isNumber(argument);
+                         	boolean isFunct = fun.contains(argument);
+                         	if (isNum) {
+                         	}
+                         	else if (isFunct) {
+                         		          	}
+                        	else if (closureBinding.containsKey(argument)) {
+                        		argument = closureBinding.get(argument);
+                        		
+                        	}else if (names.containsKey(argument)) {
+                        		argument = names.get(argument);
+                        		
+                        	}else{
+                        		closure.push(argument);
+                        		closure.push(funName);
+                        		closure.push(":error:");
+                        		continue;
+                        	}
+                        	
                         }
 
-                    }
 
-                    if (fun.contains(funName)){
-                        if (arg.equals(":error:")) {
-							closure.push(arg);
-							closure.push(funName);
-							closure.push(":error:");
-							continue;
-						}
-						if (fun.contains(funName)) {
                             closure.push(argument);
                             closure.push(funName);
 
                            funName(closure, names, fun, name, nameOnly);
 
-						}
 
                     }else {
+                    	closure.push(argument);
+						closure.push(funName);
 				        closure.push(":error:");
                         continue;
                     }
+
+
+                    }
+
+                  
 
 				}
 				else if (coms[0].equals(":true:") || coms[0].equals(":false:")){
                     closure.push(coms[0]);
                 }
+                else if (coms[0].equals("or") || coms[0].equals("and")){
+						testEquality(closure,closureBinding, coms);
+						///////////////////////////////////////////////////////////////////////////
+						///////////////////////////////////////////////////////////////////////////
+					}
+				else if (coms[0].equals("not")){
+						not(closure, closureBinding, coms);
+						///////////////////////////////////////////////////////////////////////////
+						///////////////////////////////////////////////////////////////////////////
+					}
 				else if (coms[0].equals("sub")){
+					if (closure.size()<2) {
+						closure.push(":error:");
+						continue;
+					}
 					int total;
 					String first = closure.pop();
 					String second  =  closure.pop();
+                     if (first.equals(actualArg)){
+                        first =arg;
+                        if (names.containsKey(first)) {
+                        	first = names.get(first);
+                        }
+                    }if (second.equals(actualArg)){
+                        second =arg;
+                        if (names.containsKey(second)) {
+                        	second = names.get(second);
+                        }
+                    }
+                    if(name.containsKey(first)){
+                        first= name.get(first);
+                    }
+                    if (name.containsKey(second)){
+                        second = name.get(second);
+                    }
+                    if (closureBinding.containsKey(first)) {
+                    	first =  closureBinding.get(first);
+                    }
+                    if (closureBinding.containsKey(second)) {
+                    	second =  closureBinding.get(second);
+                    }
+                    if (isNumber(first) && isNumber(second)) {                  
+						total =  sub(Integer.parseInt(second),Integer.parseInt(first));
+						closure.push(String.valueOf(total));
+					}else{
+						closure.push(second);
+						closure.push(first);
+						closure.push(":error:");
+
+					}
+				}else if (coms[0].equals("lessThan")){
+					if (closure.size()<2) {
+						closure.push(":error:");
+						continue;
+					}
+					String first = closure.pop();
+					String second  =  closure.pop();
+                    
                     if (first.equals(actualArg)){
                         first =arg;
+                        if (names.containsKey(first)) {
+                        	first = names.get(first);
+                        }
+                    }if (second.equals(actualArg)){
+                        second =arg;
+                        if (names.containsKey(second)) {
+                        	second = names.get(second);
+                        }
                     }
-
-                    if (second.equals(actualArg)){
-                        second=arg;
+                    if(name.containsKey(first)){
+                        first= name.get(first);
                     }
-					total =  sub(Integer.parseInt(second),Integer.parseInt(first));
-					closure.push(String.valueOf(total));
-				}else if (coms[0].equals("lessThan")){
+                    if (name.containsKey(second)){
+                        second = name.get(second);
+                    }
+                    if (isNumber(first) && isNumber(second)) {
+	                  	int firstInt = Integer.parseInt(first);
+						int secondInt  =  Integer.parseInt(second);
+						if (secondInt < firstInt)
+							closure.push(":true:");
+						else
+						closure.push(":false:");
+					}else{
+						closure.push(second);
+						closure.push(first);
+						closure.push(":error:");
 
-					int first = Integer.parseInt(stack.pop());
-					int second  =  Integer.parseInt(stack.pop());
-					if (second < first)
-						closure.push(":true:");
-					else
-					closure.push(":false:");
+					}
 				}
+				else if(coms[0].equals("neg")){
+
+	                    if(!closure.isEmpty()){
+	                        String tem = closure.pop();
+				
+
+							if (tem.equals(actualArg)){
+                        		tem =arg;
+	                       		 if (names.containsKey(tem)) {
+	                        		tem = names.get(tem);
+	                       		 	}
+                   			 }	
+                   			 if (closureBinding.containsKey(tem)){
+								tem = closureBinding.get(tem);
+							}
+							if (name.containsKey(tem)) {
+								tem =  name.get(tem);
+							}
+
+
+						     if(isNumber(tem)) {
+								String ret = neg(tem);
+							
+								closure.push(ret);
+							}
+	                        else {
+								closure.push(tem);
+								closure.push(":error:");
+							}
+
+	                    }else{
+	                    	closure.push(":error:");
+	                    }
+
+	                }
 				else if (coms[0].equals("end") || coms[0].equals("let")){
 
 					if (coms[0].equals("end")){
@@ -381,12 +635,23 @@ public class interpreter {
 					}
 				}
 			}
+			
             String ret = closure.pop();
+            System.out.println("--- "+ret);
            closure.push(ret);
+          if (!fun.contains("return")) {
+           	     	if(names.containsKey(arg))
+  					names.put(arg,lastBinding);
+           	    return " ";
+
+           }
 
             if (ret.equals(actualArg)){
 				if (closureBinding.containsKey(ret)){
 					return closureBinding.get(ret);
+				}
+				if (names.containsKey(ret)){
+					return names.get(ret);
 				}
                 return  arg;
             }
@@ -399,6 +664,7 @@ public class interpreter {
             else if (closureBinding.containsKey(ret)){
                 return closureBinding.get(ret);
             }
+            //System.out.println("ret "+ret);
 
 			return ret;
 		}
@@ -426,6 +692,7 @@ public class interpreter {
 
             ArrayList <String> functions =  new ArrayList<>();
             ArrayList <String> closurefunc =  new ArrayList<>();
+            ArrayList <String> functName =  new ArrayList<>();
 			Stack<String> letEnd = new Stack<>();
 
 	        try {
@@ -439,9 +706,15 @@ public class interpreter {
 	                String[] words=line.split("\\s");
 
                     if (words[0].equals("fun") || words[0].equals("inOutFun")){
-						if (words[0].equals("inOutFun")){
+						
+						if (letEnd.size()<1) {
+							functName.add(words[1]);
+							
+						}
+							if (words[0].equals("inOutFun")){
                             isInOutType=true;
                         }
+
                         local.push(":unit:");
 						/**
 						 * delete previous funtion definition
@@ -612,19 +885,7 @@ public class interpreter {
                         createBinding(local,letEnd,outSideLet,names,namesOnly, stringOnly);
 					}
 	                else if (words[0].equals("swap")){
-	                    String toArr;
-	                    String first;
-	                    String second;
-	                    if(local.size()>1) {
-	                        first = local.pop();
-	                        second = local.pop();
-	                        toArr = swap(first, second);
-	                        String ret[] = toArr.split("\\s");
-	                        local.push(ret[1]);
-	                        local.push(ret[0]);
-	                    }else {
-	                           local.push(":error:");
-	                    }
+	                   swap(local,words);
 	                }
 	                else if (words[0].equals("end") || words[0].equals("let")){
 
@@ -738,6 +999,7 @@ public class interpreter {
                                 letValues.push(words[1]);
 							}
 							else {
+							System.out.println("not a number!!!");
 								local.push(":error:");
 							}
 						}
@@ -753,73 +1015,12 @@ public class interpreter {
 
 
 	                }else if (words[0].equals("not")){
-						if (!local.isEmpty()){
-							String first = local.pop();
-
-							if (names.containsKey(first)){
-								first = names.get(first);
-							}
-
-							if(isValidBoolean(first,null) ) {
-								if (first.equals(":false:")) {
-									local.push(":true:");
-								} else if (first.equals(":true:")) {
-									local.push(":false:");
-								}
-							}else {
-								local.push(first);
-								local.push(":error:");
-							}
-						}else {
-							local.push(":error:");
-						}
+						not(local,names,words);
 					}
 	                else if (words[0].equals("or") || words[0].equals("and")){
-						if(local.isEmpty()){
-							local.push(":error:");
-						    continue;
-
-						}else  if (local.size()==1){
-							local.push(":error:");
-						    continue;
-						}
-						else {
-							String first = local.pop();
-							String second = local.pop();
-
-							if(names.containsKey(second)){
-								second = names.get(second);
-							}
-							if (names.containsKey(first)){
-								first = names.get(first);
-							}
-
-							if (isValidBoolean(first, second)) {
-
-								if(words[0].equals("and")){
-
-									if(first.equals(":true:") && second.equals(":true:")){
-										local.push(":true:");
-									}else {
-										local.push(":false:");
-
-									}
-								}else if(words[0].equals("or")){
-									     if(first.equals(":false:") && second.equals(":false:")){
-										local.push(":false:");
-
-									}else {
-										local.push(":true:");
-									}
-								}
-
-							}else {
-								local.push(second);
-								local.push(first);
-								local.push(":error:");
-							}
-
-						}
+						testEquality(local, names, words);
+						///////////////////////////////////////////////////////////////////////////
+						///////////////////////////////////////////////////////////////////////////
 					}
 	                else if(words[0].equals("neg")){
 
@@ -841,6 +1042,7 @@ public class interpreter {
 	                    	local.push(":error:");
 
 	                }else if (words[0].equals("call")){
+
                         String funName="";
                         String temArg="", arg="";
                         String retVal;
@@ -849,16 +1051,43 @@ public class interpreter {
 
                         }
                         else {
+
                             funName = local.pop();
                             arg = local.pop();
                             temArg = arg;
                         }
+                   		//System.out.println("should be errorrrrr!!!" + isNumber(arg));
 
-                        if (names.containsKey(arg)){
-                            arg= names.get(arg);
+
+                        if (arg.equals(":error:")){
+						
+                            	local.push(arg);
+                         		local.push(funName);
+                         		local.push(":error:");
+                         		continue;
                              }
+                         if(stringOnly.contains(arg)){
+                         	
+                         }
 
-                        if (functions.contains(funName)){
+                         else if(isValidName(arg)){
+                         	boolean isNum = isNumber(arg);
+                         	boolean isFunct = functName.contains(arg);
+                         	if (isNum) {
+                         	}
+                         	else if (isFunct) {
+                         		          	}
+                         	else if (names.containsKey(arg)) {
+                         		//arg = names.get(arg);
+                        	}else{
+                         		local.push(arg);
+                         		local.push(funName);
+                           		local.push(":error:");
+                         		continue;
+                         	}
+                         }
+
+                        if (functName.contains(funName)){
 
                             if (arg.equals(":error:")){
                                 local.push(arg);
@@ -867,7 +1096,16 @@ public class interpreter {
                             }else {
 
                                 retVal = closure(functions, arg, funName, local, funMap, names, namesOnly);
+								
+
+								System.out.println("ret: " + retVal);
+								System.out.println("arg: " +names.get(temArg));
+								if(retVal.equals(" ")){
+									continue;
+								}
+
 								String ret[] = retVal.split(",");
+							
 								if (ret[0].equals(":unit:")){
 									retVal=(ret[1]);
 
@@ -891,6 +1129,18 @@ public class interpreter {
                             retVal = closure(closurefunc, arg, funName, local, funMap, names, namesOnly);
 
                             String ret[] = retVal.split(",");
+                            if (ret[0].equals(" ")) {
+										continue;
+									}
+								if (ret[0].equals(":error:")) {
+										continue;
+									}	
+								
+								if (names.containsKey(ret[0])) {
+									local.push(names.get(ret[0]));
+									continue;
+									
+								}
                             if (ret[0].equals(":unit:")){
                                 retVal=ret[1];
 
@@ -959,6 +1209,90 @@ public class interpreter {
 			return false;
 
 		}
+		static void swap(Stack<String> local,String []words){
+			 String toArr;
+	                    String first;
+	                    String second;
+	                    if(local.size()>1) {
+	                        first = local.pop();
+	                        second = local.pop();
+	                        toArr = swap(first, second);
+	                        String ret[] = toArr.split("\\s");
+	                        local.push(ret[1]);
+	                        local.push(ret[0]);
+	                    }else {
+	                           local.push(":error:");
+	                    }
+		}
+
+		static void not(Stack<String> local,HashMap<String,String> names, String []words){
+			if (!local.isEmpty()){
+							String first = local.pop();
+
+							if (names.containsKey(first)){
+								first = names.get(first);
+							}
+
+							if(isValidBoolean(first,null) ) {
+								if (first.equals(":false:")) {
+									local.push(":true:");
+								} else if (first.equals(":true:")) {
+									local.push(":false:");
+								}
+							}else {
+								local.push(first);
+								local.push(":error:");
+							}
+						}else {
+							local.push(":error:");
+						}
+		}
+	static void testEquality(Stack<String> local, HashMap<String,String> names, String []words){
+			if(local.isEmpty()){
+							local.push(":error:");
+						    
+
+						}else  if (local.size()==1){
+							local.push(":error:");
+						}
+						else {
+							String first = local.pop();
+							String second = local.pop();
+
+							if(names.containsKey(second)){
+								second = names.get(second);
+							}
+							if (names.containsKey(first)){
+								first = names.get(first);
+							}
+
+							if (isValidBoolean(first, second)) {
+
+								if(words[0].equals("and")){
+
+									if(first.equals(":true:") && second.equals(":true:")){
+										local.push(":true:");
+									}else {
+										local.push(":false:");
+
+									}
+								}else if(words[0].equals("or")){
+									     if(first.equals(":false:") && second.equals(":false:")){
+										local.push(":false:");
+
+									}else {
+										local.push(":true:");
+									}
+								}
+
+							}else {
+								local.push(second);
+								local.push(first);
+								local.push(":error:");
+							}
+
+						}
+	}
 	static void createBinding(Stack<String> local,Stack<String> letEnd,
 							  HashMap<String,String> outSideLet,
 							  HashMap<String,String> names,
@@ -1046,7 +1380,9 @@ public class interpreter {
 				local.push(":error:");
 			}else {
 				retVal = closure(functions, arg, funName, local, funMap, names, namesOnly);
-                local.push(retVal);
+			
+                	local.push(retVal);
+            
 			}
 
 
@@ -1127,6 +1463,13 @@ public class interpreter {
 	        pr.println(writeTo);
 	    }
 	    pr.close();
+	}
+
+	public  static void main(String args[]) {
+		interpreter in  =  new interpreter();
+	String input ="/home/kemo/Desktop/CSE305/CSE305-Programing-Languages/interpreter/TestCasesPart3/input_7.txt";
+	String output=" ";//home/kemo/Desktop/CSE305/CSE305-Programing-Languages/interpreter/TestCasesPart3/output_1.txt";
+	in.interpreter(input,output);
 	}
 
 }
